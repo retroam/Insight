@@ -1,7 +1,7 @@
 import threetaps
 import urllib2
 from BeautifulSoup import BeautifulSoup
-
+import json
 
 API_KEY = '082906284971364c1cb52da644536e37'
 client = threetaps.Threetaps(API_KEY)
@@ -10,6 +10,9 @@ response = client.search.search(params={'source': 'CRAIG',
                                         'retvals': 'external_url,body,heading',
                                         'sort': 'timestamp',
                                         'rpp': 100})
+
+with open('example_response.txt', 'w') as outfile:
+    json.dump(response['postings'], outfile)
 
 urls = [response['postings'][i]['external_url'] for i in range(100)]
 print urls[0]
@@ -26,3 +29,5 @@ for i in range(100):
 
 
 print url_tag['This posting has been flagged for removal.[?]']
+
+
