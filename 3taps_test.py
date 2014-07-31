@@ -12,7 +12,7 @@ response = client.search.search(params={'source': 'CRAIG',
                                         'rpp': 100})
 
 with open('example_response.txt', 'w') as outfile:
-    json.dump(response['postings'], outfile)
+    json.dump(response, outfile)
 
 urls = [response['postings'][i]['external_url'] for i in range(100)]
 print urls[0]
