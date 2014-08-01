@@ -12,16 +12,18 @@ retvals = ['id', 'account_id', 'source', 'category', 'category_group', 'location
            'state', 'immortal', 'deleted', 'flagged_status']
 
 
-number_files = 1000
-
+number_files = 100
+page = 0
 for i in range(number_files):
     print str(i)
+    page += 1
     response = client.search.search(params={'source': 'CRAIG',
                                             'retvals':','.join(retvals),
                                             'sort': 'timestamp',
                                             'status': 'for_rent',
                                             'anchor': str(anchor),
-                                            'rpp': 100, })
-    name = 'File' + str(i) + '.json'
+                                            'rpp': 100,
+                                            'page': page})
+    name = './data_dump/File0' + str(i) + '.json'
     with open(name, 'w') as outfile:
         json.dump(response, outfile)
