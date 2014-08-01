@@ -12,7 +12,7 @@ retvals = ['id', 'account_id', 'source', 'category', 'category_group', 'location
            'state', 'immortal', 'deleted', 'flagged_status']
 
 
-number_files = 10
+number_files = 1000
 
 for i in range(number_files):
     print str(i)
