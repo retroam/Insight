@@ -35,7 +35,8 @@ for i in range(50):
             except:
                 print 'error'
         f.close()
-
+print "Number of normal posts:" + str(len(no_flag))
+print "Number of flagged posts:" + str(len(flag))
 
 words_flag = [w for id in flag
                   for w in flag[id].split()]
@@ -56,10 +57,12 @@ plt.xlabel('Word Rank')
 plt.savefig('./Images/no_flag')
 
 
-name = 'words_flag.json'
+name = 'no_flag.json'
+file_save = {'result': no_flag}
 with open(name, 'w') as outfile:
-    json.dump({words_flag}, outfile)
+    json.dump(file_save, outfile)
 
-name = 'words.json'
+file_save = {'result': flag}
+name = 'flag.json'
 with open(name, 'w') as outfile:
     json.dump({words}, outfile)
