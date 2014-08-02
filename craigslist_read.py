@@ -14,9 +14,9 @@ print files
 flag_message = 'This posting has been flagged for removal.[?]'
 no_flag = {}
 flag = {}
-for i in range(50):
+for i in range(1, len(files)):
     print i
-    with open('./data_dump/' + files[i + 1]) as f:
+    with open('./data_dump/' + files[i]) as f:
         my_dict = json.load(f)
 
 
@@ -44,17 +44,17 @@ words_flag = [w for id in flag
 words = [w for id in no_flag
                   for w in no_flag[id].split()]
 
-word_counts = sorted(Counter(words_flag).values(), reverse=True)
-plt.loglog(word_counts)
-plt.ylabel('Freq')
-plt.xlabel('Word Rank')
-plt.savefig('./Images/flag')
-
-word_counts = sorted(Counter(words).values(), reverse=True)
-plt.loglog(word_counts)
-plt.ylabel('Freq')
-plt.xlabel('Word Rank')
-plt.savefig('./Images/no_flag')
+# word_counts = sorted(Counter(words_flag).values(), reverse=True)
+# plt.loglog(word_counts)
+# plt.ylabel('Freq')
+# plt.xlabel('Word Rank')
+# plt.savefig('./Images/flag')
+#
+# word_counts = sorted(Counter(words).values(), reverse=True)
+# plt.loglog(word_counts)
+# plt.ylabel('Freq')
+# plt.xlabel('Word Rank')
+# plt.savefig('./Images/no_flag')
 
 
 name = 'no_flag.json'
@@ -65,4 +65,4 @@ with open(name, 'w') as outfile:
 file_save = {'result': flag}
 name = 'flag.json'
 with open(name, 'w') as outfile:
-    json.dump({words}, outfile)
+    json.dump(file_save, outfile)
