@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 
 files = listdir('./data_dump')
-print files
+
 flag_message = 'This posting has been flagged for removal.[?]'
 no_flag = {}
 flag = {}
