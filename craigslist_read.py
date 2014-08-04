@@ -7,8 +7,6 @@ from BeautifulSoup import BeautifulSoup
 import matplotlib.pyplot as plt
 
 
-
-
 files = listdir('./data_dump')
 print files
 flag_message = 'This posting has been flagged for removal.[?]'
@@ -38,11 +36,11 @@ for i in range(1, len(files)):
 print "Number of normal posts:" + str(len(no_flag))
 print "Number of flagged posts:" + str(len(flag))
 
-words_flag = [w for id in flag
-                  for w in flag[id].split()]
+words_flag = [w for post_id in flag
+              for w in flag[post_id].split()]
 
-words = [w for id in no_flag
-                  for w in no_flag[id].split()]
+words = [w for post_id in no_flag
+         for w in no_flag[post_id].split()]
 
 # word_counts = sorted(Counter(words_flag).values(), reverse=True)
 # plt.loglog(word_counts)
