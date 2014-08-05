@@ -1,0 +1,126 @@
+import pymysql as mdb
+from os import listdir
+import json
+import requests
+from BeautifulSoup import BeautifulSoup
+
+
+drop_table_sql = '''
+                   DROP TABLE IF EXISTS Postings
+                   '''
+
+create_table_sql = '''
+                   CREATE TABLE Postings (
+                   id INTEGER PRIMARY KEY,
+                   source TEXT,
+                   category TEXT,
+                   category_group TEXT,
+                   country TEXT,
+                   city TEXT,
+                   zipcode TEXT,
+                   external_url TEXT,
+                   heading TEXT,
+                   body TEXT,
+                   price INTEGER,
+                   currency TEXT,
+                   images INTEGER,
+                   flagged_status INTEGER
+
+                   )
+                   '''
+
+create_index_sql = '''
+                   CREATE INDEX column_id
+                   ON Postings (id)
+                   '''
+
+populate_index_sql = '''
+                     INSERT INTO Postings VALUES(
+                     %(id)s,
+                     %(source)s,
+                     %(category)s,
+                     %(category_group)s,
+                     %(country)s,
+                     %(city)s,
+                     %(zipcode)s,
+                     %(external_url)s,
+                     %(heading)s,
+                     %(body)s,
+                     %(price)s,
+                     %(currency)s,
+                     %(images)s,
+                     %(flagged_status)s
+                     )
+                     '''
+dict_fields = ['id', 'source', 'category', 'category_group', 'location',
+               'external_url', 'heading', 'body',
+               'price', 'currency', 'images', 'flagged_status']
+
+location_fields = ['country', 'city', 'zipcode']
+
+test_select_sql = '''
+                   SELECT *
+                   FROM Postings
+                     '''
+
+
+def parse_post(data, dict_fields, location_fields):
+    i = 0
+    my_dict = {}
+    for field in dict_fields:
+        if field == 'location':
+            print location_fields
+            for location_field in location_fields:
+                print location_field
+                if location_field in data['postings'][i]['location']:
+                    my_dict[location_field] = data['postings'][i][field][location_field]
+        elif field == 'images':
+             my_dict[field] = len(data['postings'][i][field])
+        elif field == 'external_url':
+                my_dict[field] = mdb.escape_string(data['postings'][i][field])
+        elif field == 'flagged_status':
+            url = data['postings'][i]['external_url']
+            my_dict[field] = check_flag(url)
+        else:
+            my_dict[field] = data['postings'][i][field]
+    return my_dict
+
+
+def check_flag(post_url):
+    flag_message = 'This posting has been flagged for removal.[?]'
+    try:
+        response = requests.get(post_url)
+        soup = BeautifulSoup(response.text)
+        tag = soup.find('h2').text
+        if tag == flag_message:
+            return 1
+        else:
+            return 0
+    except:
+        return 2
+
+con = mdb.connect('localhost', 'root', '', 'INSIGHTdb')
+
+files = listdir('./data_dump/')
+with open('./data_dump/' + files[-1]) as f:
+        data = json.load(f)
+
+
+with con:
+    cur = con.cursor()
+    cur.execute(drop_table_sql)
+    cur.execute(create_table_sql)
+    cur.execute(create_index_sql)
+
+my_dict = parse_post(data, dict_fields, location_fields)
+
+
+with con:
+    cur = con.cursor()
+    cur.execute(populate_index_sql, my_dict)
+
+with con:
+    cur = con.cursor()
+    cur.execute(test_select_sql)
+
+print cur.fetchall()
