@@ -5,6 +5,8 @@ import requests
 from BeautifulSoup import BeautifulSoup
 
 
+FILE_PATH = '/Volumes/New Volume/Insight/Project/data_dump'
+
 drop_table_sql = '''
                    DROP TABLE IF EXISTS Postings
                    '''
@@ -66,7 +68,7 @@ test_select_sql = '''
 
 def parse_post(data, dict_fields, location_fields):
     parsed_posts = []
-    for i in range(len(data)):
+    for i in range(len(data['postings'])):
         my_dict = {}
         for field in dict_fields:
             if field == 'location':
@@ -106,8 +108,7 @@ def check_flag(post_url):
 
 con = mdb.connect('localhost', 'root', '', 'INSIGHTdb', charset='utf8')
 
-files = listdir('./data_dump/')
-
+files = listdir(FILE_PATH)
 
 with con:
     cur = con.cursor()
@@ -119,7 +120,7 @@ with con:
 with con:
     cur = con.cursor()
     for file in files[1:]:
-        with open('./data_dump/' + file) as f:
+        with open(FILE_PATH + '/' + file) as f:
             data = parse_post(json.load(f), dict_fields, location_fields)
             for j in range(len(data)):
                 cur.execute(populate_index_sql, data[j])
