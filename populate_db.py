@@ -11,7 +11,7 @@ drop_table_sql = '''
 
 create_table_sql = '''
                    CREATE TABLE Postings (
-                   id INTEGER PRIMARY KEY,
+                   id INTEGER,
                    source TEXT,
                    category TEXT,
                    category_group TEXT,
@@ -65,25 +65,30 @@ test_select_sql = '''
 
 
 def parse_post(data, dict_fields, location_fields):
-    i = 0
-    my_dict = {}
-    for field in dict_fields:
-        if field == 'location':
-            print location_fields
-            for location_field in location_fields:
-                print location_field
-                if location_field in data['postings'][i]['location']:
-                    my_dict[location_field] = data['postings'][i][field][location_field]
-        elif field == 'images':
-             my_dict[field] = len(data['postings'][i][field])
-        elif field == 'external_url':
-                my_dict[field] = mdb.escape_string(data['postings'][i][field])
-        elif field == 'flagged_status':
-            url = data['postings'][i]['external_url']
-            my_dict[field] = check_flag(url)
-        else:
-            my_dict[field] = data['postings'][i][field]
-    return my_dict
+    parsed_posts = []
+    for i in range(len(data)):
+        my_dict = {}
+        for field in dict_fields:
+            if field == 'location':
+                for location_field in location_fields:
+                    if location_field in data['postings'][i]['location']:
+                        my_dict[location_field] = data['postings'][i][field][location_field]
+                    else:
+                        my_dict[location_field] = None
+            elif field == 'images':
+                 my_dict[field] = len(data['postings'][i][field])
+            elif field == 'external_url':
+                    my_dict[field] = mdb.escape_string(data['postings'][i][field])
+            elif field == 'flagged_status':
+                url = data['postings'][i]['external_url']
+                my_dict[field] = check_flag(url)
+            elif field in data['postings'][i]:
+                my_dict[field] = data['postings'][i][field]
+            else:
+                 my_dict[field] = None
+            parsed_posts.append(my_dict)
+
+        return parsed_posts
 
 
 def check_flag(post_url):
@@ -99,11 +104,9 @@ def check_flag(post_url):
     except:
         return 2
 
-con = mdb.connect('localhost', 'root', '', 'INSIGHTdb')
+con = mdb.connect('localhost', 'root', '', 'INSIGHTdb', charset='utf8')
 
 files = listdir('./data_dump/')
-with open('./data_dump/' + files[-1]) as f:
-        data = json.load(f)
 
 
 with con:
@@ -112,12 +115,15 @@ with con:
     cur.execute(create_table_sql)
     cur.execute(create_index_sql)
 
-my_dict = parse_post(data, dict_fields, location_fields)
-
 
 with con:
     cur = con.cursor()
-    cur.execute(populate_index_sql, my_dict)
+    for file in files[1:]:
+        with open('./data_dump/' + file) as f:
+            data = parse_post(json.load(f), dict_fields, location_fields)
+            for j in range(len(data)):
+                cur.execute(populate_index_sql, data[j])
+                con.commit()
 
 with con:
     cur = con.cursor()
