@@ -1,0 +1,44 @@
+body {
+  padding-top: 70px;
+  padding-bottom: 30px;
+}
+
+.theme-dropdown .dropdown-menu {
+  position: static;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.theme-showcase > p > .btn {
+  margin: 5px 0;
+}
+
+.theme-showcase .navbar .container {
+  width: auto;
+}
+
+.form-large{
+    font-size: 60px;
+}
+
+td {
+     font-size: .9em;
+ }
+
+ .craigflagr-options-text {
+     font-weight: bold;
+     font-size: 100em;
+
+      color:red;
+ }
+
+ .craigflagr-item-table-view-row {
+     background-color: #ededed;
+
+ }
+
+ .center-table
+{
+  margin: 0 auto !important;
+  float: none !important;
+}

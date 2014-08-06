@@ -120,11 +120,15 @@ with con:
 with con:
     cur = con.cursor()
     for file in files[1:]:
-        with open(FILE_PATH + '/' + file) as f:
-            data = parse_post(json.load(f), dict_fields, location_fields)
-            for j in range(len(data)):
-                cur.execute(populate_index_sql, data[j])
-                con.commit()
+        try:
+            with open(FILE_PATH + '/' + file) as f:
+                print FILE_PATH + '/' + file
+                data = parse_post(json.load(f), dict_fields, location_fields)
+                for j in range(len(data)):
+                    cur.execute(populate_index_sql, data[j])
+                    con.commit()
+        except:
+            print 'error'
 
 with con:
     cur = con.cursor()
