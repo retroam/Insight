@@ -1,10 +1,11 @@
 from flask import render_template, request
 from app import app
 import pymysql as mdb
-
+from model import read_url, flag_score
 
 db = mdb.connect(user="root", host="localhost", db="Insightdb",
                  charset='utf8')
+
 
 @app.route('/')
 @app.route('/home')
@@ -16,7 +17,8 @@ def index():
 @app.route("/result")
 def result_page():
     url = request.args.get('url')
-    print url
+    post = read_url(url)
+    score = flag_score(url)
     with db:
         cur = db.cursor()
         cur.execute(
@@ -34,4 +36,5 @@ def result_page():
         flag_results.append(dict(heading=result[0], flagged_status=result[1],
                                  body=result[2], url=result[3]))
 
-    return render_template('result.html', flag_results=flag_results)
+    return render_template('result.html', flag_results=flag_results,post=post,
+                           score=score)
