@@ -46,7 +46,7 @@
         <div class="container">
             <div class="craigflagr-options-text text-center">
 
-                <h1 class="craigflagr-options-text text-center">{{score}}</h1>
+                <h1 class="craigflagr-options-text text-center">{{score  + '/100'}}</h1>
             </div>
        </div>
 
@@ -71,7 +71,7 @@
                             {{result['heading']}}
               </a>
         </td>
-        <td class="text-center">{{result['flagged_status']}}</td>
+        <td class="text-center">{{result['flag_score']}}</td>
         {% endfor %}
     </table>
     </div>

@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, jsonify
 from app import app
 import pymysql as mdb
 
@@ -46,3 +46,14 @@ def cities_page_fancy():
                            population=result[2]))
 
     return render_template('cities.html', cities=cities)
+
+@app.route("/db_json")
+def cities_json():
+    with db:
+        cur = db.cursor()
+        cur.execute("SELECT Name, CountryCode, Population FROM city ORDER BY Population;")
+        query_results = cur.fetchall()
+    cities = []
+    for result in query_results:
+        cities.append(dict(name=result[0], country=result[1], population=result[2]))
+    return jsonify(dict(cities=cities))

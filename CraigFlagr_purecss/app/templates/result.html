@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A layout example that shows off a responsive product landing page.">
+
+    <title>CraigFlagr Home</title>
+
+
+<link rel="stylesheet" href="../static/pure-release-0.5.0/pure-min.css">
+
+
+
+<!--[if lte IE 8]>
+  
+    <link rel="stylesheet" href="../static/pure-release-0.5.0/grids-responsive-old-ie-min.css">
+  
+<![endif]-->
+<!--[if gt IE 8]><!-->
+  
+    <link rel="stylesheet" href="../static/pure-release-0.5.0/grids-responsive-min.css">
+  
+<!--<![endif]-->
+
+
+
+  
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="../static/css/layouts/marketing-old-ie.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+        <link rel="stylesheet" href="../static/css/layouts/marketing.css">
+    <!--<![endif]-->
+  
+
+
+
+<link rel="stylesheet" href="../static/css/font-awesome.css">
+</head>
+]
+
+<div class="header">
+    <div class="home-menu pure-menu pure-menu-open pure-menu-horizontal pure-menu-fixed">
+        <a class="pure-menu-heading" href="/home">CraigFlagr</a>
+
+        <ul>
+            <li class="pure-menu-selected"><a href="/home">Home</a></li>
+            <li><a href="#">About</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="splash-container">
+    <div class="splash">
+        <h1 class="splash-head">{{score  + '/100'}}</h1>
+        <p class="splash-subhead">
+            FlagScore
+        </p>
+    </div>
+</div>
+
+<div class="content-wrapper">
+    <div class="content">
+        <h2 class="content-head is-center">Post details</h2>
+
+        <div class="pure-g is-center">
+            <div class="pure-u-1 is-center">
+                <p>
+                    {{post}}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="ribbon pure-g is-center">
+        <div class="pure-u-1">
+
+            <h2 class="content-head content-head-ribbon">Recommended posts</h2>
+
+         <table class="pure-table pure-table-bordered is-center" style="margin: auto;">
+                    <thead>
+                        <tr>
+                            <th class="is-center">Posts</th>
+                            <th>FlagScore</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for result in flag_results %}
+                        <tr class="pure-table-odd">
+                            <td>
+                                <a href="{{result['url']}}">
+                                    {{result['heading']}}
+                                </a>
+                            </td>
+                            <td>{{result['flag_score']}}</td>
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+       </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

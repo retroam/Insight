@@ -1,7 +1,7 @@
 from flask import render_template, request
 from app import app
 import pymysql as mdb
-from model import read_url, flag_score
+from model import read_url, flag_score, flag_score_post
 
 db = mdb.connect(user="root", host="localhost", db="Insightdb",
                  charset='utf8')
@@ -33,8 +33,12 @@ def result_page():
 
     flag_results = []
     for result in query_results:
+        flg_score = flag_score_post(result[2])
         flag_results.append(dict(heading=result[0], flagged_status=result[1],
-                                 body=result[2], url=result[3]))
+                                 body=result[2], url=result[3],
+                                 flag_score=flg_score))
 
-    return render_template('result.html', flag_results=flag_results,post=post,
-                           score=score)
+    flag_results_sorted = sorted(flag_results, key=lambda k: k['flag_score'])
+    return render_template('result.html', flag_results=flag_results_sorted,post=post,
+                           score=str(score))
+
