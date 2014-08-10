@@ -5,7 +5,8 @@ import requests
 from BeautifulSoup import BeautifulSoup
 
 
-FILE_PATH = '/Volumes/New Volume/Insight/Project/data_dump'
+#FILE_PATH = '/Volumes/New Volume/Insight/Project/data_dump'
+FILE_PATH = '/Users/robertamanfu/Documents/Insight/Project/data_dump'
 
 drop_table_sql = '''
                    DROP TABLE IF EXISTS Postings
@@ -88,9 +89,9 @@ def parse_post(data, dict_fields, location_fields):
                 my_dict[field] = data['postings'][i][field]
             else:
                  my_dict[field] = None
-            parsed_posts.append(my_dict)
+        parsed_posts.append(my_dict)
 
-        return parsed_posts
+    return parsed_posts
 
 
 def check_flag(post_url):
@@ -109,6 +110,9 @@ def check_flag(post_url):
 con = mdb.connect('localhost', 'root', '', 'INSIGHTdb', charset='utf8')
 
 files = listdir(FILE_PATH)
+if '.DS_Store' in files: files.remove('.DS_Store')
+
+
 
 with con:
     cur = con.cursor()
@@ -119,7 +123,7 @@ with con:
 
 with con:
     cur = con.cursor()
-    for file in files[1:]:
+    for file in files:
         try:
             with open(FILE_PATH + '/' + file) as f:
                 print FILE_PATH + '/' + file
@@ -127,8 +131,8 @@ with con:
                 for j in range(len(data)):
                     cur.execute(populate_index_sql, data[j])
                     con.commit()
-        except:
-            print 'error'
+        except IOError as e:
+            print "I/O error({0}): {1}".format(e.errno, e.strerror)
 
 with con:
     cur = con.cursor()

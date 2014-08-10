@@ -24,9 +24,10 @@ def feature_extractor(post):
 def read_url(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.text)
-    find_meta = soup.findAll('meta', attrs={"name": "description"})
-    content = find_meta[0]['content']
-    return content
+    find_section = soup.findAll('section', attrs={"id": "postingbody"})
+    text = find_section[0].findAll(text=True)
+    clean_text = ' '.join(text)
+    return clean_text
 
 
 def flag_score(url):

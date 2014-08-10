@@ -10,9 +10,7 @@ db = mdb.connect(user="root", host="localhost", db="Insightdb",
 @app.route('/')
 @app.route('/home')
 def index():
-    return render_template("home.html",
-                           title='Home', user={'nickname': 'Miguel'},
-                           )
+    return render_template("home.html")
 
 @app.route("/result")
 def result_page():

@@ -84,6 +84,12 @@ a.pure-button-primary {
     font-size: 120%;
 }
 
+button.pure-button-primary {
+    background: white;
+    color: #1f8dd6;
+    border-radius: 5px;
+    font-size: 120%;
+}
 
 /*
  * -- MENU STYLES --
