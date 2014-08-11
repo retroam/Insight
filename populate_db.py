@@ -5,9 +5,9 @@ import requests
 from BeautifulSoup import BeautifulSoup
 
 
-#FILE_PATH = '/Volumes/New Volume/Insight/Project/data_dump'
-FILE_PATH = '/Users/robertamanfu/Documents/Insight/Project/data_dump'
-
+FILE_PATH = '/Volumes/New Volume/Insight/Project/data_dump'
+#FILE_PATH = '/Users/robertamanfu/Documents/Insight/Project/data_dump'
+INITIALIZE = False
 drop_table_sql = '''
                    DROP TABLE IF EXISTS Postings
                    '''
@@ -113,12 +113,12 @@ files = listdir(FILE_PATH)
 if '.DS_Store' in files: files.remove('.DS_Store')
 
 
-
-with con:
-    cur = con.cursor()
-    cur.execute(drop_table_sql)
-    cur.execute(create_table_sql)
-    cur.execute(create_index_sql)
+if INITIALIZE:
+    with con:
+        cur = con.cursor()
+        cur.execute(drop_table_sql)
+        cur.execute(create_table_sql)
+        cur.execute(create_index_sql)
 
 
 with con:
