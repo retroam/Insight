@@ -286,3 +286,5 @@ button.pure-button-primary {
         font-size: 300%;
     }
 }
+
+.highlight { background: #000; color: #fff; }

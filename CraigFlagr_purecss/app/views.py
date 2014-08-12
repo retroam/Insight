@@ -2,9 +2,14 @@ from flask import render_template, request
 from app import app
 import pymysql as mdb
 from model import read_url, flag_score, flag_score_post
+from sql_statements import select_query_zip
 
 db = mdb.connect(user="root", host="localhost", db="Insightdb",
                  charset='utf8')
+
+
+
+
 
 
 @app.route('/')
@@ -15,18 +20,11 @@ def index():
 @app.route("/result")
 def result_page():
     url = request.args.get('url')
-    post = read_url(url)
+    post, zipcode = read_url(url)
     score = flag_score(url)
     with db:
         cur = db.cursor()
-        cur.execute(
-            '''
-            SELECT heading, flagged_status, body, external_url
-            FROM Postings
-            GROUP BY id
-            LIMIT 5;
-            '''
-        )
+        cur.execute(select_query_zip, zipcode)
         query_results = cur.fetchall()
 
     flag_results = []

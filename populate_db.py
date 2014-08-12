@@ -84,7 +84,8 @@ def parse_post(data, dict_fields, location_fields):
                     my_dict[field] = mdb.escape_string(data['postings'][i][field])
             elif field == 'flagged_status':
                 url = data['postings'][i]['external_url']
-                my_dict[field] = check_flag(url)
+                #my_dict[field] = check_flag(url)
+                my_dict[field] = 2
             elif field in data['postings'][i]:
                 my_dict[field] = data['postings'][i][field]
             else:
@@ -123,7 +124,7 @@ if INITIALIZE:
 
 with con:
     cur = con.cursor()
-    for file in files:
+    for file in files[100:]:
         try:
             with open(FILE_PATH + '/' + file) as f:
                 print FILE_PATH + '/' + file

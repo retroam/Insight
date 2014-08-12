@@ -37,6 +37,12 @@
 
 
 <link rel="stylesheet" href="../static/css/font-awesome.css">
+ <link rel="stylesheet" href="../templates/custom.css">
+<script src="../static/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../static/bower_components/jquery-ui/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="../static/bower_components/jquery-ui/jquery-ui.min.css">
+
+
 </head>
 ]
 
@@ -60,18 +66,31 @@
     </div>
 </div>
 
+
+
+
 <div class="content-wrapper">
     <div class="content">
         <h2 class="content-head is-center">Post details</h2>
 
         <div class="pure-g is-center">
             <div class="pure-u-1 is-center">
+                  <script>
+                    $('p').highlight(['The','A']);
+                </script>
+
+
+
                 <p>
                     {{post}}
                 </p>
+
+
             </div>
         </div>
     </div>
+
+
 
     <div class="ribbon pure-g is-center">
         <div class="pure-u-1">
