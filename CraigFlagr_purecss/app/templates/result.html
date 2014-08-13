@@ -1,5 +1,7 @@
 <!doctype html>
 <html lang="en">
+
+
 <head>
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,14 +39,14 @@
 
 
 <link rel="stylesheet" href="../static/css/font-awesome.css">
- <link rel="stylesheet" href="../templates/custom.css">
 <script src="../static/bower_components/jquery/dist/jquery.min.js"></script>
 <script src="../static/bower_components/jquery-ui/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="../static/bower_components/jquery-ui/jquery-ui.min.css">
+<script src="../static/bower_components/jquery-ui/ui/jquery.highlight.js"></script>
 
 
 </head>
-]
+
 
 <div class="header">
     <div class="home-menu pure-menu pure-menu-open pure-menu-horizontal pure-menu-fixed">
@@ -63,6 +65,9 @@
         <p class="splash-subhead">
             FlagScore
         </p>
+        <p clash="splash-subhead">
+         <img src="../static/img/common/thumbs_down.PNG" height="100" width="64">
+        </p>
     </div>
 </div>
 
@@ -75,15 +80,19 @@
 
         <div class="pure-g is-center">
             <div class="pure-u-1 is-center">
-                  <script>
-                    $('p').highlight(['The','A']);
-                </script>
 
-
-
-                <p>
+                <p id="colortext">
                     {{post}}
                 </p>
+
+                <script>
+                    WORDS = ['UN', 'Midtown'];
+                    for (var i = 0; i< WORDS.length; i++){
+                         $('#colortext').highlight(WORDS[i]);
+
+                    }
+
+                </script>
 
 
             </div>

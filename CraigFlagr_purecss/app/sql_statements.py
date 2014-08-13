@@ -11,5 +11,6 @@ select_query_full = '''
     WHERE zipcode = '{0}'
     AND category = '{1}'
     AND category_group = '{2}'
+    GROUP BY id
     LIMIT 5;
                     '''
