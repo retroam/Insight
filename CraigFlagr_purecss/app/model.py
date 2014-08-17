@@ -12,24 +12,44 @@ f = open(PICKLE_FILE)
 classifier = pickle.load(f)
 
 
-def get_post_words(post, stopwords = []):
+def get_post_words(post, stopwords=[]):
     pwords = [w for w in post.split() if not w in stopwords]
     return pwords
 
 
-def feature_extractor(post):
+def get_bag_words():
+    word_bag = classifier.most_informative_features(5000)
+    words = [word[0] for word in word_bag]
+    return words
+
+def feature_extractor(post, list_words=[], stop_words=[]):
     features = defaultdict(list)
     post_word = get_post_words(post)
-    for w in post_word:
-        features[w] = True
-    return features
+    if not list_words:
+        for w in post_word:
+            if w not in stop_words:
+                features[w] = True
+        return features
+    else:
+        for w in post_word:
+            if w not in stop_words and w in list_words:
+                features[w] = True
+            return features
+
+
+def text_clean(listing_text):
+    listing_text_clean = re.sub('\n|\t', ' ', listing_text)
+    listing_text_clean = re.sub('\s+', ' ', listing_text_clean)
+    listing_text_clean = re.sub("'", '', listing_text_clean)
+    listing_text_clean = re.sub('"', '', listing_text_clean)
+    return listing_text_clean.lstrip().strip()
 
 
 def get_zip(loc):
     try:
         latitude = loc[0].get('data-latitude')
         longitude = loc[0].get('data-longitude')
-        google_api = Geocoding()
+        google_api = Geocoding('AIzaSyBkWTcFg-kawvHmt1MryKvMcpmsNmrGWPU')
         map_loc = google_api.reverse(float(latitude), float(longitude))
         items = map_loc[0]['address_components']
         result = [item['long_name'] for item in items if item['types'][0] == 'postal_code']
@@ -44,7 +64,7 @@ def read_url(url):
     soup = BeautifulSoup(response.text)
     find_section = soup.findAll('section', attrs={"id": "postingbody"})
     text = find_section[0].findAll(text=True)
-    clean_text = ' '.join(text)
+    clean_text = text_clean(' '.join(text))
 
     find_loc = soup.findAll('div', attrs={"id": "map"})
     zipcode = get_zip(find_loc)

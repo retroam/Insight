@@ -39,6 +39,7 @@
 
 
 <link rel="stylesheet" href="../static/css/font-awesome.css">
+<link rel="stylesheet" href="../static/css/custom.css">
 <script src="../static/bower_components/jquery/dist/jquery.min.js"></script>
 <script src="../static/bower_components/jquery-ui/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="../static/bower_components/jquery-ui/jquery-ui.min.css">
@@ -61,12 +62,12 @@
 
 <div class="splash-container">
     <div class="splash">
-        <h1 class="splash-head">{{score  + '/100'}}</h1>
+        <h1 class="splash-head" id="Flag">{{score  + '/100'}}</h1>
         <p class="splash-subhead">
             FlagScore
         </p>
         <p clash="splash-subhead">
-         <img src="../static/img/common/thumbs_down.PNG" height="100" width="64">
+         <img id="Flagimage" src="../static/img/common/thumbs_up.PNG" height="100" width="64">
         </p>
     </div>
 </div>
@@ -85,14 +86,7 @@
                     {{post}}
                 </p>
 
-                <script>
-                    WORDS = ['UN', 'Midtown'];
-                    for (var i = 0; i< WORDS.length; i++){
-                         $('#colortext').highlight(WORDS[i]);
 
-                    }
-
-                </script>
 
 
             </div>
@@ -106,23 +100,23 @@
 
             <h2 class="content-head content-head-ribbon">Recommended posts</h2>
 
-         <table class="pure-table pure-table-bordered is-center" style="margin: auto;">
-                    <thead>
+         <table class="pure-table pure-table-bordered is-center" style="margin: auto;width: 100%">
+                    <thead style="background: #34495e; color: #6FBEF3">
                         <tr>
                             <th class="is-center">Posts</th>
-                            <th>FlagScore</th>
+                            <th class="is-center">FlagScore</th>
                         </tr>
                     </thead>
 
                     <tbody>
                     {% for result in flag_results %}
-                        <tr class="pure-table-odd">
-                            <td>
-                                <a href="{{result['url']}}">
+                        <tr class="pure-table-striped">
+                            <td style="background-color: rgba(96, 141, 158, 0.63)">
+                                <a style="color: #6FBEF3" href="{{result['url']}}">
                                     {{result['heading']}}
                                 </a>
                             </td>
-                            <td>{{result['flag_score']}}</td>
+                            <td style="background-color: rgba(96, 141, 158, 0.63) ;color: #6FBEF3">{{result['flag_score']}}</td>
                         </tr>
                     {% endfor %}
 
@@ -132,7 +126,38 @@
 
         </div>
     </div>
-</div>
+
+
+
+
+   <script>
+
+
+
+                   var score = {{score}}
+                   if (score < 50) {
+
+                       $('#Flagimage').attr("src", "../static/img/common/thumbs_up.PNG")
+                   }
+                  else{
+                       $('#Flagimage').attr("src", "../static/img/common/thumbs_down.PNG")
+
+                   }
+                   var words = ['ID','Flooring','fixtures.','Size:','Explore','superb','Dramatic','Buena',
+                       'residents.','allowed,','Neighborhood,','Oil','lakeside','-Renovated','possess',
+                       'lakefront','rural','-Pet','Sq.','Benjamin','Nostrand','-Hardwood','sleek','enter',
+                       '$200','believed','setting.','ADDRESS','gleaming','Shant','Davidian','discover',
+                        'guaranteed.','Heating','finishes.','River.','Everett','conveniences','Year',
+                        'animals.','Bruce','LINK','grocery,','exception','High-speed','Countertops','request',
+                       'beginning','info:','patio.'];
+                            for (var i = 0; i < words.length; i++){
+                                 $('#colortext').highlight(words[i]);
+
+                            }
+
+
+    </script>
+
 
 </body>
 </html>

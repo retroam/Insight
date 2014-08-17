@@ -1,7 +1,7 @@
 from flask import render_template, request
 from app import app
 import pymysql as mdb
-from model import read_url, flag_score, flag_score_post, parse_post
+from model import read_url, flag_score, flag_score_post, parse_post, get_bag_words
 from sql_statements import select_query_zip, select_query_full
 import threetaps
 
@@ -35,6 +35,7 @@ def result_page():
     url = request.args.get('url')
     post, zipcode, post_id = read_url(url)
     score = flag_score(url)
+    words = get_bag_words()
     response = client.search.search(params={'source': 'CRAIG',
                                             'retvals': ','.join(RETVALS),
                                             'sort': 'timestamp',
@@ -60,6 +61,6 @@ def result_page():
                                  flag_score=flg_score))
 
     flag_results_sorted = sorted(flag_results, key=lambda k: k['flag_score'])
-    return render_template('result.html', flag_results=flag_results_sorted,post=post,
-                           score=str(score))
+    return render_template('result.html', flag_results=flag_results_sorted, post=post,
+                           score=str(score), WORDS=words)
 
